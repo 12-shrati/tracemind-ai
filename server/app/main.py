@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.api.routes.users import router as users_router
 from app.api.routes.orders import router as orders_router
 from app.api.routes.incidents import router as incidents_router
+from app.api.routes.analysis import router as analysis_router
 
 app = FastAPI(
     title="TraceMind AI",
@@ -13,6 +14,7 @@ app = FastAPI(
 app.include_router(users_router)
 app.include_router(orders_router)
 app.include_router(incidents_router)
+app.include_router(analysis_router)
 
 @app.get("/")
 def root():
