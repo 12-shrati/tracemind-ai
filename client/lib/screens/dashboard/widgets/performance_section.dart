@@ -73,6 +73,13 @@ class PerformanceSection extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         SreGauge(score: sreScore.toInt()),
+
+        const SizedBox(height: 20),
+        SlaCard(sla: sla),
+        const SizedBox(height: 20),
+        CapacityCard(capacity: capacity),
+        const SizedBox(height: 20),
+        RiskCard(risk: risk),
         const SizedBox(height: 30),
         Center(
           child: Text(
@@ -80,12 +87,6 @@ class PerformanceSection extends StatelessWidget {
             style: const TextStyle(color: Colors.grey, fontSize: 12),
           ),
         ),
-        const SizedBox(height: 20),
-        SlaCard(sla: sla),
-        const SizedBox(height: 20),
-        CapacityCard(capacity: capacity),
-        const SizedBox(height: 20),
-        RiskCard(risk: risk),
       ],
     );
   }

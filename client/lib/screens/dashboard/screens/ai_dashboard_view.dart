@@ -41,6 +41,13 @@ class AiDashboardView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           AiInsightsSection(aiAnalysis: aiAnalysis),
+          const SizedBox(height: 30),
+          Center(
+            child: Text(
+              'Powered by OpenTelemetry • SigNoz • Gemini AI',
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+          ),
         ],
       ),
     );

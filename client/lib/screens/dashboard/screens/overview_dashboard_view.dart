@@ -77,6 +77,14 @@ class OverviewDashboardView extends StatelessWidget {
             risk: risk,
             overview: overview,
           ),
+
+          const SizedBox(height: 30),
+          Center(
+            child: Text(
+              'Powered by OpenTelemetry • SigNoz • Gemini AI',
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+          ),
         ],
       ),
     );
