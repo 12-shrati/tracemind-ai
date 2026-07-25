@@ -59,7 +59,7 @@ class DashboardProvider extends ChangeNotifier {
     _timer?.cancel();
 
     _timer = Timer.periodic(
-      const Duration(minutes: 30),
+      const Duration(seconds: 30),
       (_) => unawaited(loadDashboard()),
     );
   }

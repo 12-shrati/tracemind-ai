@@ -32,57 +32,68 @@ class PerformanceDashboardView extends StatelessWidget {
     final capacity = _asMap(dashboard['capacity_analysis']);
 
     final performance = _asMap(metrics['performance']);
+    final statusCodes = _asMap(metrics['status_codes']);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Performance & Reliability',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Performance & Reliability',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Inspect latency, error trends, SRE health, and SLA posture.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Inspect latency, error trends, SRE health, and SLA posture.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 20),
-          PerformanceTabsContent(
-            overviewContent: PerformanceSection(
-              incident: incident,
-              metrics: metrics,
-              sla: sla,
-              capacity: capacity,
-              risk: risk,
-              sreScore: (sre['sre_score'] as num? ?? 0).toDouble(),
+        ),
+        const SizedBox(height: 20),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: PerformanceTabsContent(
+              overviewContent: PerformanceSection(
+                incident: incident,
+                metrics: metrics,
+                sla: sla,
+                capacity: capacity,
+                risk: risk,
+                sreScore: (sre['sre_score'] as num? ?? 0).toDouble(),
+              ),
+              chartContent: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Latency Trend',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 10),
+                  LatencyChart(
+                    latency: (performance['p95_latency_ms'] as num? ?? 0)
+                        .toDouble(),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Status Codes',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 10),
+                  StatusCodeChart(statusCodes: statusCodes),
+                ],
+              ),
             ),
-            chartContent: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Latency Trend',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 10),
-                LatencyChart(
-                  latency: (performance['p95_latency_ms'] as num? ?? 0)
-                      .toDouble(),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Status Codes',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 10),
-                StatusCodeChart(statusCodes: metrics['status_codes']),
-              ],
-            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -25,10 +25,20 @@ class PerformanceSection extends StatelessWidget {
     required this.sreScore,
   });
 
+  Map<String, dynamic> _asMap(dynamic value) {
+    if (value is Map<String, dynamic>) {
+      return value;
+    }
+    if (value is Map) {
+      return Map<String, dynamic>.from(value);
+    }
+    return <String, dynamic>{};
+  }
+
   @override
   Widget build(BuildContext context) {
-    final performance = metrics['performance'] as Map<String, dynamic>;
-    final overview = metrics['overview'] as Map<String, dynamic>;
+    final performance = _asMap(metrics['performance']);
+    final overview = _asMap(metrics['overview']);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

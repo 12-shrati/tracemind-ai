@@ -95,7 +95,14 @@ class _PerformanceTabsContentState extends State<PerformanceTabsContent> {
           ),
         ),
         const SizedBox(height: 16),
-        _selectedIndex == 0 ? widget.overviewContent : widget.chartContent,
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: _selectedIndex == 0
+                ? widget.overviewContent
+                : widget.chartContent,
+          ),
+        ),
       ],
     );
   }
