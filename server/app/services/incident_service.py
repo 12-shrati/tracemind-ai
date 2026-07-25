@@ -1,57 +1,56 @@
-import random
-import time
-
-from opentelemetry import trace
-
-tracer = trace.get_tracer(__name__)
-
-
 class IncidentService:
 
-    def simulate(self, incident_type: str):
+    def evaluate(self, metrics):
 
-        with tracer.start_as_current_span("Validate Incident"):
-            time.sleep(0.2)
+        overview = metrics.get("overview", {})
+        performance = metrics.get("performance", {})
 
-        if incident_type == "slow_database":
-            return self.slow_database()
+        error_rate = overview.get("error_rate", 0)
+        p95 = performance.get("p95_latency_ms", 0)
+        avg = performance.get("average_latency_ms", 0)
 
-        elif incident_type == "payment_timeout":
-            return self.payment_timeout()
-
-        elif incident_type == "external_api_failure":
-            return self.external_api_failure()
-
-        else:
-            return {
-                "status": "unknown incident"
-            }
-
-    def slow_database(self):
-
-        with tracer.start_as_current_span("Database Query"):
-            time.sleep(3)
-
-        return {
-            "incident": "slow_database",
-            "status": "completed"
+        incident = {
+            "health": "Healthy",
+            "severity": "INFO",
+            "incident": "System operating normally",
+            "confidence": 100,
+            "alerts": []
         }
 
-    def payment_timeout(self):
+        if error_rate >= 20:
+            incident.update({
+            "health": "Critical",
+            "severity": "SEV-1",
+            "status": "Active",
+            "incident": "High error rate detected",
+            "confidence": 98,
+            "affected_service": "tracemind-ai-backend",
+            "detected_at": "2026-07-25T06:41:17Z",
+            "alerts": [
+                "Error rate above 20%"
+            ]
+            })
 
-        with tracer.start_as_current_span("Payment Gateway"):
+        elif p95 >= 5000:
+            incident.update({
+                "health": "Degraded",
+                "severity": "SEV-2",
+                "incident": "High latency detected",
+                "confidence": 95,
+                "alerts": [
+                    "P95 latency above 5 seconds"
+                ]
+            })
 
-            time.sleep(5)
+        elif avg >= 1000:
+            incident.update({
+                "health": "Warning",
+                "severity": "SEV-3",
+                "incident": "Average latency is high",
+                "confidence": 90,
+                "alerts": [
+                    "Average latency above 1 second"
+                ]
+            })
 
-        return {
-            "incident": "payment_timeout",
-            "status": "timeout simulated"
-        }
-
-    def external_api_failure(self):
-
-        with tracer.start_as_current_span("External Weather API"):
-
-            time.sleep(1)
-
-            raise Exception("External API unavailable")
+        return incident
