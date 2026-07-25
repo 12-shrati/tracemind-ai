@@ -9,3 +9,6 @@ class AIService:
     def analyze(self, analysis_data):
 
         return self.client.analyze_incident(analysis_data)
+
+    def chat(self, prompt: str) -> str:
+        return self.client.chat(prompt)

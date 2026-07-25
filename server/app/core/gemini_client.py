@@ -49,7 +49,7 @@ Return ONLY valid JSON.
 """
 
         response = self.client.models.generate_content(
-            model="gemini-3.6-flash",
+            model="gemini-3.5-flash-lite", 
             contents=prompt
         )
 
@@ -67,3 +67,11 @@ Return ONLY valid JSON.
                 "parse_error": True,
                 "raw_response": response.text
             }
+
+    def chat(self, prompt: str) -> str:
+        response = self.client.models.generate_content(
+            model="gemini-3.5-flash-lite", 
+            contents=prompt
+        )
+
+        return response.text

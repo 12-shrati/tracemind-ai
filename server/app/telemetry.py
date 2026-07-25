@@ -14,7 +14,7 @@ def setup_telemetry():
     trace.set_tracer_provider(provider)
 
     exporter = OTLPSpanExporter(
-        endpoint="localhost:4317",
+        endpoint="http://localhost:4317",
         insecure=True
     )
 

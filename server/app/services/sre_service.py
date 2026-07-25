@@ -2,25 +2,29 @@ class SREService:
 
     def evaluate(self, metrics, incident):
 
-        overview = metrics["overview"]
-        performance = metrics["performance"]
+        overview = metrics.get("overview", {})
+        performance = metrics.get("performance", {})
 
         score = 100
         recommendations = []
 
-        if overview["error_rate"] > 5:
+        error_rate = overview.get("error_rate", 0)
+        avg_latency = performance.get("average_latency_ms", 0)
+        p95_latency = performance.get("p95_latency_ms", 0)
+
+        if error_rate > 5:
             score -= 30
             recommendations.append(
                 "Error rate exceeds SRE threshold (5%)."
             )
 
-        if performance["p95_latency_ms"] > 1000:
+        if p95_latency > 1000:
             score -= 20
             recommendations.append(
                 "P95 latency exceeds 1 second."
             )
 
-        if performance["average_latency_ms"] > 500:
+        if avg_latency > 500:
             score -= 10
             recommendations.append(
                 "Average latency is above healthy limits."
